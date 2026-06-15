@@ -1,0 +1,10 @@
+<table class="table">
+  <thead><tr><th>Игрок</th><th>WPM</th><th>Точность</th><th>Ошибки</th></tr></thead>
+  <tbody>
+  {% for result in results %}
+    <tr><td>{% if result.user_id %}<a class="profile-link" href="{% url 'public_profile' result.user_id %}">{{ result.player_name }}</a>{% else %}{{ result.player_name }}{% endif %}</td><td>{{ result.wpm }}</td><td>{{ result.accuracy|floatformat:1 }}%</td><td>{{ result.errors }}</td></tr>
+  {% empty %}
+    <tr><td colspan="4">Пока нет результатов</td></tr>
+  {% endfor %}
+  </tbody>
+</table>

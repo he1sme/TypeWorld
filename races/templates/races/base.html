@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeWorld</title>
+  <link rel="stylesheet" href="{% static 'races/css/style.css' %}">
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="/">TypeWorld</a>
+    <div class="nav-links">
+      <a href="{% url 'race_solo' %}">Тренировка</a>
+      <a href="{% url 'leaderboard' %}">Лидеры</a>
+      <a href="{% url 'shop' %}">Магазин</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'achievements' %}">Достижения</a>
+        <a class="crystal-balance" href="{% url 'buy_crystals' %}" title="Купить кристаллики">💎 {{ typeworld_crystals }} <b class="crystal-plus">+</b></a>
+        <a href="{% url 'profile' %}">{{ user.username }}</a>
+        <a href="{% url 'logout' %}">Выйти</a>
+      {% else %}
+        <a href="{% url 'login' %}">Войти</a>
+      {% endif %}
+    </div>
+  </nav>
+  <main class="container">
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

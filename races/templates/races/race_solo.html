@@ -1,0 +1,15 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<div class="race-page" data-mode="solo" data-text="{{ text.content|escapejs }}">
+  <div class="card">
+    <p class="eyebrow">{{ text.source }}</p>
+    <h1>{{ text.title }}</h1>
+    <p class="muted">{{ text.author }}</p>
+    <div id="text" class="typing-text"></div>
+    <textarea id="input" class="typing-input" placeholder="Начни печатать здесь..."></textarea>
+    <div class="stats"><span>WPM: <b id="wpm">0</b></span><span>Точность: <b id="accuracy">100</b>%</span><span>Ошибки: <b id="errors">0</b></span></div>
+  </div>
+</div>
+<script src="/static/races/js/typingCore.js"></script>
+<script src="/static/races/js/solo.js"></script>
+{% endblock %}

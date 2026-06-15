@@ -1,0 +1,13 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<form class="auth-card modern-auth email-code-form" method="post">
+  {% csrf_token %}
+  <p class="eyebrow">Проверка кода</p>
+  <h1>Введите код</h1>
+  <p class="muted">Код отправлен на <b>{{ email }}</b>. Он действует 10 минут.</p>
+  {% if messages %}{% for message in messages %}<p class="message {{ message.tags }}">{{ message }}</p>{% endfor %}{% endif %}
+  <input name="code" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="000000" autocomplete="one-time-code" required autofocus>
+  <button class="btn primary" type="submit">Войти</button>
+  <a class="btn" href="{% url 'email_login_start' %}">Отправить новый код</a>
+</form>
+{% endblock %}

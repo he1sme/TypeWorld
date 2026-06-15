@@ -1,0 +1,26 @@
+{% extends 'races/base.html' %}
+{% load static %}
+{% block title %}Гонка — TypeWorld{% endblock %}
+{% block content %}
+<section class="card race-card" data-text-id="{{ typing_text.id }}">
+    <div class="race-head">
+        <div>
+            <p class="eyebrow">{{ typing_text.title }}</p>
+            <h1>Печатай текст ниже</h1>
+        </div>
+        <div class="metrics">
+            <span><b id="wpm">0</b> WPM</span>
+            <span><b id="accuracy">100</b>% точность</span>
+            <span><b id="timer">0.0</b> сек</span>
+        </div>
+    </div>
+    <div id="text" class="typing-text">{{ typing_text.content }}</div>
+    <textarea id="input" placeholder="Начни печатать здесь..."></textarea>
+    <div class="actions">
+        <button id="restart" class="secondary">Заново</button>
+        <a class="button" href="{% url 'leaderboard' %}">Таблица лидеров</a>
+    </div>
+    <p id="status" class="status"></p>
+</section>
+<script src="{% static 'races/js/race.js' %}"></script>
+{% endblock %}

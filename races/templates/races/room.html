@@ -1,0 +1,47 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<div class="room-page" data-code="{{ room.code }}" data-player="{{ player_name }}" data-skin="{{ current_skin|default:'car_01' }}">
+  <div class="room-header">
+    <div>
+      <p class="eyebrow">Онлайн-комната</p>
+      <h1>Комната {{ room.code }}</h1>
+      <p class="muted">Отправь этот код другу. После старта новые подключившиеся будут только зрителями. Скин машинки выбирается в магазине.</p>
+      <p id="roleBadge" class="pill">Роль: игрок</p>
+    </div>
+    <div class="start-area">
+      <div id="countdownBox" class="countdown-box" hidden></div>
+      <button id="startBtn" class="btn primary">Старт гонки</button>
+    </div>
+  </div>
+
+  <div class="race-screen">
+    <section class="card race-map-card wide-race-card">
+      <div class="race-map-head">
+        <div>
+          <p class="eyebrow">Трасса гонки</p>
+          <h2>Заезд в реальном времени</h2>
+        </div>
+        <p class="muted">Машинки занимают всю ширину страницы и двигаются по мере набора текста.</p>
+      </div>
+      <div id="track" class="race-track race-track-wide"></div>
+    </section>
+
+    <div class="grid race-layout race-layout-bottom">
+      <div class="card typing-card">
+        <p class="eyebrow" id="source">Источник</p>
+        <h2 id="book">Загрузка текста...</h2>
+        <p class="muted" id="author"></p>
+        <div id="text" class="typing-text locked">Ожидание игроков...</div>
+        <textarea id="input" class="typing-input" placeholder="После старта печатай здесь..." disabled></textarea>
+        <div class="stats"><span>WPM: <b id="wpm">0</b></span><span>Точность: <b id="accuracy">100</b>%</span><span>Ошибки: <b id="errors">0</b></span></div>
+        <h2 id="winner" class="winner"></h2>
+        <p id="finishInfo" class="muted"></p>
+      </div>
+      <div id="players" hidden></div>
+    </div>
+  </div>
+</div>
+{{ unlocked_skins|json_script:"unlockedSkinsData" }}
+<script src="/static/races/js/typingCore.js"></script>
+<script src="/static/races/js/room.js"></script>
+{% endblock %}

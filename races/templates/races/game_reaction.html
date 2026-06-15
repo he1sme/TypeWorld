@@ -1,0 +1,31 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="game-page card" data-game="reaction">
+  <div class="game-head">
+    <div>
+      <p class="eyebrow">Реакция клавиш</p>
+      <h1>Попади в нужную клавишу</h1>
+    </div>
+    <a class="btn" href="{% url 'games' %}">Все игры</a>
+  </div>
+
+  <div class="game-stats">
+    <span>Раунд: <b id="round">0</b>/20</span>
+    <span>Среднее: <b id="avgReaction">0</b> мс</span>
+    <span>Ошибки: <b id="reactionMistakes">0</b></span>
+  </div>
+
+  <div class="reaction-box">
+    <div class="reaction-label">Нажми клавишу</div>
+    <div id="reactionKey" class="reaction-key">?</div>
+  </div>
+
+  <div class="actions">
+    <button id="startReaction" class="btn primary">Начать</button>
+    <button id="restartReaction" class="btn">Заново</button>
+  </div>
+
+  <div id="reactionResult" class="game-result"></div>
+</section>
+<script src="/static/races/js/games.js"></script>
+{% endblock %}

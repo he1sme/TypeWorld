@@ -1,0 +1,73 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="profile-grid">
+  <div class="card profile-card-main">
+    <p class="eyebrow">Профиль</p>
+    <h1>{{ user.username }}</h1>
+    <p class="muted">{{ user.email|default:'Почта не указана' }}</p>
+    <div class="profile-stats">
+      <span><b>{{ results_count }}</b> гонок</span>
+      <span><b>{{ best_wpm }}</b> лучший WPM</span>
+      <span><b>{{ avg_accuracy|floatformat:1 }}%</b> средняя точность</span>
+      <span><b>{{ social_count }}</b> соц. входов</span>
+      <span><b>💎 {{ crystals }}</b> кристалликов</span>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Быстрые действия</h2>
+    <div class="actions vertical">
+      <a class="btn primary" href="{% url 'create_room' %}">Создать комнату</a>
+      <a class="btn" href="{% url 'edit_profile' %}">Редактировать профиль</a>
+      <a class="btn" href="{% url 'shop' %}">Выбрать машинку</a>
+      <a class="btn" href="{% url 'achievements' %}">Достижения</a>
+      <a class="btn" href="{% url 'leaderboard' %}">Лидеры</a>
+    </div>
+  </div>
+</section>
+
+<section class="card achievements-preview">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Награды</p>
+      <h2>Достижения</h2>
+    </div>
+    <a class="btn" href="{% url 'achievements' %}">Все достижения</a>
+  </div>
+  <div class="achievement-strip">
+    {% for item in achievements|slice:":5" %}
+      <div class="mini-achievement {% if item.unlocked %}unlocked{% else %}locked{% endif %}">
+        <span>{% if item.unlocked %}🏆{% else %}🔒{% endif %}</span>
+        <strong>{{ item.title }}</strong>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="card records-panel-profile">
+  <h2>Рекорды мини-игр</h2>
+  <table class="table">
+    <thead><tr><th>Игра</th><th>Рекорд</th><th>Обновлено</th></tr></thead>
+    <tbody>
+      {% for record in records %}
+        <tr><td>{{ record.game_code }}</td><td>{{ record.score }}</td><td>{{ record.updated_at|date:'d.m H:i' }}</td></tr>
+      {% empty %}
+        <tr><td colspan="3">Рекордов пока нет.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="card results-panel-profile">
+  <h2>Последние результаты</h2>
+  <table class="table">
+    <thead><tr><th>Игрок</th><th>WPM</th><th>Точность</th><th>Ошибки</th><th>Дата</th></tr></thead>
+    <tbody>
+      {% for result in recent_results %}
+        <tr><td>{{ result.player_name }}</td><td>{{ result.wpm }}</td><td>{{ result.accuracy|floatformat:1 }}%</td><td>{{ result.errors }}</td><td>{{ result.finished_at|date:'d.m H:i' }}</td></tr>
+      {% empty %}
+        <tr><td colspan="5">Результатов пока нет.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

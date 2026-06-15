@@ -1,0 +1,50 @@
+{% extends 'races/base.html' %}
+{% load i18n %}
+{% block content %}
+<section class="auth-shell auth-shell-centered social-signup-page">
+  <div class="auth-hero card social-signup-hero">
+    <p class="eyebrow">TypeWorld ID</p>
+    <h1>Завершение входа</h1>
+    <p class="lead small">
+      Ты вошёл через {{ account.get_provider.name|default:'социальный аккаунт' }}.
+      Осталось выбрать никнейм для TypeWorld.
+    </p>
+    <div class="auth-benefits">
+      <span>🏁 онлайн-гонки</span>
+      <span>📊 личная статистика</span>
+      <span>🚗 магазин машинок</span>
+    </div>
+  </div>
+
+  <div class="auth-card modern-auth social-signup-card">
+    <div class="auth-provider-badge">
+      <span class="social-icon">G</span>
+      <div>
+        <b>Google подключён</b>
+        <p>{{ form.email.value|default:user.email|default:'Почта получена из Google' }}</p>
+      </div>
+    </div>
+
+    <h2>Создать профиль</h2>
+    <p class="muted auth-note">
+      Если такая почта уже есть в TypeWorld, аккаунт будет подключён автоматически без этой формы.
+    </p>
+
+    <form method="post" class="auth-form social-signup-form">
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="form-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in form %}
+        <div class="form-field-wrap">
+          <label class="field-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted field-help">{{ field.help_text }}</p>{% endif %}
+          {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+        </div>
+      {% endfor %}
+      <button class="btn primary full" type="submit">Продолжить</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

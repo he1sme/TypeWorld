@@ -1,0 +1,18 @@
+{% extends 'races/base.html' %}
+{% load i18n %}
+{% block content %}
+<section class="auth-shell auth-shell-centered">
+  <div class="auth-hero card">
+    <p class="eyebrow">Социальный вход</p>
+    <h1>Подтверждение входа</h1>
+    <p class="lead small">Продолжи авторизацию через выбранный сервис, чтобы войти в TypeWorld.</p>
+  </div>
+  <div class="auth-card modern-auth">
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      <button class="btn primary full" type="submit">Продолжить</button>
+    </form>
+    <a class="btn full" href="{% url 'login' %}">Назад ко входу</a>
+  </div>
+</section>
+{% endblock %}

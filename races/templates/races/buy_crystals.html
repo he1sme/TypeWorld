@@ -1,0 +1,59 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="card crystal-shop-hero">
+  <p class="eyebrow">Кристаллики</p>
+  <h1>Купить кристаллики</h1>
+  <p class="muted">Выбери готовый набор или введи своё количество. Стоимость пересчитывается сразу.</p>
+  <p class="pill">Текущий баланс: 💎 {{ crystals|default:0 }}</p>
+</section>
+
+<section class="crystal-shop-grid">
+  {% for pack in packs %}
+  <button class="crystal-pack" type="button" data-amount="{{ pack.amount }}">
+    <span class="crystal-pack-amount">💎 {{ pack.amount }}</span>
+    <span class="crystal-pack-price">{{ pack.price }} ₽</span>
+  </button>
+  {% endfor %}
+</section>
+
+<section class="card crystal-buy-card">
+  <h2>Своя покупка</h2>
+  <form method="post" id="crystalBuyForm" class="crystal-buy-form">
+    {% csrf_token %}
+    <label class="field-label" for="crystalAmount">Количество кристалликов</label>
+    <input id="crystalAmount" name="amount" type="number" min="1" max="10000" value="50" required>
+    <div class="crystal-total">
+      <span>Итого:</span>
+      <b id="crystalPrice">45 ₽</b>
+    </div>
+    <p class="muted small">Чем больше кристалликов берёшь, тем ниже цена за штуку.</p>
+    <button class="btn primary" type="submit">Купить</button>
+  </form>
+</section>
+
+<script>
+const amountInput = document.getElementById('crystalAmount');
+const priceOutput = document.getElementById('crystalPrice');
+function crystalPrice(amount){
+  amount = Math.max(1, Math.min(parseInt(amount || '1', 10), 10000));
+  let rate = 1;
+  if (amount >= 500) rate = 0.70;
+  else if (amount >= 250) rate = 0.80;
+  else if (amount >= 100) rate = 0.85;
+  else if (amount >= 50) rate = 0.90;
+  return Math.round(amount * rate);
+}
+function refreshPrice(){
+  priceOutput.textContent = crystalPrice(amountInput.value) + ' ₽';
+}
+document.querySelectorAll('.crystal-pack').forEach(pack => {
+  pack.addEventListener('click', () => {
+    amountInput.value = pack.dataset.amount;
+    refreshPrice();
+    document.querySelectorAll('.crystal-pack').forEach(item => item.classList.toggle('active', item === pack));
+  });
+});
+amountInput.addEventListener('input', refreshPrice);
+refreshPrice();
+</script>
+{% endblock %}

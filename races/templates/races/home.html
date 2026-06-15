@@ -1,0 +1,74 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">Онлайн-гонки на скорость печати</p>
+    <h1>Сражайся с реальными игроками в TypeWorld</h1>
+    <p class="lead">Создай комнату, пригласи друга кодом и печатай на скорость!</p>
+    <div class="actions">
+      <a class="btn primary" href="{% url 'create_room' %}">Создать онлайн-комнату</a>
+      <a class="btn" href="{% url 'race_solo' %}">Одиночная тренировка</a>
+    </div>
+  </div>
+  <form class="join-card" method="post" action="{% url 'join_room' %}">
+    {% csrf_token %}
+    <h2>Подключиться</h2>
+    <input name="code" placeholder="Код комнаты" autocomplete="off">
+    <button class="btn primary" type="submit">Войти в комнату</button>
+  </form>
+</section>
+
+<section class="home-games">
+    <div class="section-head">
+        <h2>Мини-игры</h2>
+        <span class="muted">Зарабатывай по 10 кристаллов за рекорды</span>
+    </div>
+
+    <div class="game-menu">
+        <a href="{% url 'game_sprint' %}" class="game-card">
+            <div class="game-icon">⚡</div>
+            <h2>Спринт</h2>
+            <p>
+                Напечатай как можно больше слов за ограниченное время.
+                Тренируй скорость набора и зарабатывай кристаллы.
+            </p>
+        </a>
+
+        <a href="{% url 'game_falling_words' %}" class="game-card">
+            <div class="game-icon">☄️</div>
+            <h2>Падающие слова</h2>
+            <p>
+                Успевай печатать слова до того,
+                как они упадут вниз экрана.
+            </p>
+        </a>
+
+        <a href="{% url 'game_reaction' %}" class="game-card">
+            <div class="game-icon">🎯</div>
+            <h2>Реакция</h2>
+            <p>
+                Проверка скорости реакции на клавиши.
+                Чем быстрее ответ — тем лучше результат.
+            </p>
+        </a>
+    </div>
+</section>
+
+<section class="grid two">
+  <div class="card">
+    <h2>Активные комнаты</h2>
+    {% for room in rooms %}
+      <a class="room-row" href="{% url 'room' room.code %}">
+        <strong>{{ room.code }}</strong><span>{{ room.status }}</span>
+      </a>
+    {% empty %}
+      <p class="muted">Комнат пока нет.</p>
+    {% endfor %}
+  </div>
+  <div class="card">
+    <h2>Топ игроков</h2>
+    {% include 'races/results_table.html' %}
+  </div>
+</section>
+
+{% endblock %}

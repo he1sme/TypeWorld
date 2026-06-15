@@ -1,0 +1,30 @@
+{% extends 'races/base.html' %}
+{% load static %}
+{% block content %}
+<section class="card">
+  <p class="eyebrow">Прогресс</p>
+  <h1>Достижения</h1>
+  <p class="muted">Открывай достижения в гонках и получай новые машинки для магазина.</p>
+  <p class="pill">Открыто машинок: {{ unlocked_skins|length }}</p>
+</section>
+
+<div class="achievement-grid">
+  {% for item in achievements %}
+  <article class="achievement-card {% if item.unlocked %}unlocked{% else %}locked{% endif %}">
+    <div class="achievement-top">
+      <span class="achievement-icon">{% if item.unlocked %}🏆{% else %}🔒{% endif %}</span>
+      <div>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+      </div>
+    </div>
+    {% if item.skin %}
+    <div class="achievement-reward">
+      <img src="{% static 'races/cars/' %}{{ item.skin }}.png" alt="{{ item.skin_name }}">
+      <span>{% if item.unlocked %}Открыто{% else %}Награда{% endif %}: {{ item.skin_name }}</span>
+    </div>
+    {% endif %}
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="auth-shell auth-shell-centered">
+  <div class="auth-hero card">
+    <p class="eyebrow">Регистрация</p>
+    <h1>Создай аккаунт</h1>
+    <p class="lead small">Для TypeWorld основной способ — вход по почте с кодом или через социальные сети.</p>
+  </div>
+  <div class="auth-card modern-auth">
+    <a class="social-btn google" href="/accounts/google/login/?process=login"><span class="social-icon">G</span><span>Через Google</span></a>
+    <a class="social-btn vk" href="/accounts/vk/login/?process=login"><span class="social-icon">VK</span><span>Через VK</span></a>
+    <div class="auth-divider"><span>или</span></div>
+    <a class="btn primary full" href="{% url 'email_login_start' %}">Получить код на почту</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="hero small-hero">
+  <div>
+    <p class="eyebrow">Мини-игры</p>
+    <h1>Тренируй скорость, реакцию и точность</h1>
+    <p class="lead">Выбери режим и прокачивай печать вне гонок. Все игры работают сразу в браузере.</p>
+  </div>
+</section>
+
+<section class="game-menu">
+  <a class="game-card" href="{% url 'game_sprint' %}">
+    <span class="game-icon">⚡</span>
+    <h2>Спринт</h2>
+    <p>Печатай как можно больше слов за 30 секунд.</p>
+  </a>
+  <a class="game-card" href="{% url 'game_falling' %}">
+    <span class="game-icon">☄️</span>
+    <h2>Падающие слова</h2>
+    <p>Успевай вводить слова, пока они не достигли нижней границы.</p>
+  </a>
+  <a class="game-card" href="{% url 'game_reaction' %}">
+    <span class="game-icon">🎯</span>
+    <h2>Реакция клавиш</h2>
+    <p>Нажимай показанную клавишу как можно быстрее.</p>
+  </a>
+</section>
+{% endblock %}

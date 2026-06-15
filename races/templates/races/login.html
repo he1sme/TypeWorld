@@ -1,0 +1,26 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="auth-shell">
+  <div class="auth-hero card">
+    <p class="eyebrow">Аккаунт TypeWorld</p>
+    <h1>Вход и регистрация</h1>
+    <p class="lead small">Выбери удобный способ. Через почту вход работает по одноразовому коду, без пароля.</p>
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}<p class="message {{ message.tags }}">{{ message }}</p>{% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="auth-card modern-auth">
+    <a class="social-btn google" href="/accounts/google/login/?process=login">
+      <span class="social-icon">G</span><span>Продолжить через Google</span>
+    </a>
+    <a class="social-btn vk" href="/accounts/vk/login/?process=login">
+      <span class="social-icon">VK</span><span>Продолжить через VK</span>
+    </a>
+    <div class="auth-divider"><span>или</span></div>
+    <a class="btn primary email-login-btn" href="{% url 'email_login_start' %}">Войти по почте с кодом</a>
+  </div>
+</section>
+{% endblock %}

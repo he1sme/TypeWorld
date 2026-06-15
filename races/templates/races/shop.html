@@ -1,0 +1,87 @@
+{% extends 'races/base.html' %}
+{% load static %}
+{% block content %}
+<section class="card">
+  <p class="eyebrow">Магазин</p>
+  <h1>Скины машинок</h1>
+  <p class="muted">Машинки из достижений открываются за прогресс.</p>
+  <p class="pill">Баланс: 💎 {{ crystals|default:0 }}</p>
+  <p id="currentSkinText" class="pill">Текущий скин: классика</p>
+  {% if not user.is_authenticated %}
+    <p class="muted">Войди в аккаунт, чтобы покупать и выбирать машинки.</p>
+  {% endif %}
+</section>
+
+{{ unlocked_skins|json_script:"unlockedSkinsData" }}
+
+<div class="shop-grid">
+  {% for skin in skins %}
+  <div class="skin-card {% if not skin.unlocked %}locked{% endif %} {% if skin.price %}paid-skin{% endif %}" data-skin="{{ skin.id }}" data-name="{{ skin.name }}" data-unlocked="{% if skin.unlocked %}1{% else %}0{% endif %}">
+    <div class="skin-preview">
+      <img src="{% static 'races/cars/' %}{{ skin.id }}.png?v=no-shadow-1" alt="{{ skin.name }}">
+    </div>
+    <h3>{{ skin.name }}</h3>
+    {% if skin.unlocked %}
+      {% if user.is_authenticated %}
+        <form method="post" action="{% url 'select_car' skin.id %}">
+          {% csrf_token %}
+          <button class="btn primary skin-select" type="submit">Выбрать</button>
+        </form>
+      {% else %}
+        <button class="btn primary skin-select" type="button">Выбрать</button>
+      {% endif %}
+    {% elif skin.buyable %}
+      <p class="skin-lock">💎 {{ skin.price }}</p>
+      {% if user.is_authenticated %}
+        <form method="post" action="{% url 'buy_car' skin.id %}">
+          {% csrf_token %}
+          <button class="btn primary" type="submit">Купить за {{ skin.price }} 💎</button>
+        </form>
+      {% else %}
+        <a class="btn" href="{% url 'login' %}">Войти для покупки</a>
+      {% endif %}
+    {% else %}
+      <p class="skin-lock">🔒 {{ skin.achievement.title }}</p>
+      <p class="muted small">{{ skin.achievement.description }}</p>
+      <button class="btn skin-select" type="button" disabled>Закрыто</button>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<p class="shop-note">Выбранный скин сохраняется в профиле и появляется в онлайн-гонке.</p>
+
+<script>
+const unlockedSkins = JSON.parse(document.getElementById('unlockedSkinsData').textContent || '["car_01"]');
+const cards = document.querySelectorAll('.skin-card');
+const currentText = document.getElementById('currentSkinText');
+const oldSkinMap = {red:'car_01', blue:'car_02', green:'car_04', yellow:'car_03', purple:'car_07'};
+const profileSkin = '{{ current_skin|default:"car_01"|escapejs }}';
+if (profileSkin) localStorage.setItem('typeworld_car_skin', profileSkin);
+function normalizeSkin(value){
+  const mapped = oldSkinMap[value] || value || 'car_01';
+  return unlockedSkins.includes(mapped) ? mapped : 'car_01';
+}
+function refreshActive(){
+  const selected = normalizeSkin(localStorage.getItem('typeworld_car_skin'));
+  localStorage.setItem('typeworld_car_skin', selected);
+  cards.forEach(card => {
+    const active = card.dataset.skin === selected;
+    const unlocked = card.dataset.unlocked === '1';
+    card.classList.toggle('active', active);
+    const btn = card.querySelector('.skin-select');
+    if (btn && unlocked) btn.textContent = active ? 'Выбрано' : 'Выбрать';
+    if (active) currentText.textContent = 'Текущий скин: ' + card.dataset.name;
+  });
+}
+cards.forEach(card => {
+  const btn = card.querySelector('.skin-select');
+  if (!btn || card.dataset.unlocked !== '1') return;
+  btn.addEventListener('click', () => {
+    localStorage.setItem('typeworld_car_skin', card.dataset.skin);
+    refreshActive();
+  });
+});
+refreshActive();
+</script>
+{% endblock %}

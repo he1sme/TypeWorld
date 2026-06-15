@@ -1,0 +1,42 @@
+{% extends 'races/base.html' %}
+{% block content %}
+<section class="card profile-edit-card">
+  <p class="eyebrow">Профиль</p>
+  <h1>Редактирование профиля</h1>
+  <p class="muted">Машинки покупаются и выбираются только в магазине.</p>
+  <form method="post" class="form-grid profile-form">
+    {% csrf_token %}
+    <label>
+      Логин
+      <input name="username" maxlength="30" value="{{ user.username }}" placeholder="Логин">
+    </label>
+    <label>
+      Отображаемое имя
+      <input name="display_name" maxlength="40" value="{{ profile_obj.display_name }}" placeholder="Например, Михаил">
+    </label>
+    <label>
+      Имя
+      <input name="first_name" maxlength="150" value="{{ user.first_name }}" placeholder="Имя">
+    </label>
+    <label>
+      Фамилия
+      <input name="last_name" maxlength="150" value="{{ user.last_name }}" placeholder="Фамилия">
+    </label>
+    <label class="wide">
+      О себе
+      <textarea name="bio" maxlength="160" rows="4" placeholder="Коротко о себе">{{ profile_obj.bio }}</textarea>
+    </label>
+    <div class="profile-preview wide">
+      <div>
+        <h3>{{ profile_obj.public_name }}</h3>
+        <p class="muted">{{ profile_obj.bio|default:'Описание пока не заполнено.' }}</p>
+      </div>
+    </div>
+    <div class="actions wide">
+      <button class="btn primary" type="submit">Сохранить</button>
+      <a class="btn" href="{% url 'profile' %}">Отмена</a>
+      <a class="btn" href="{% url 'shop' %}">Магазин машинок</a>
+    </div>
+  </form>
+</section>
+{% endblock %}
