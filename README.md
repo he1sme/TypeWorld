@@ -6,10 +6,10 @@ Django-проект онлайн-гонок по набору текста.
 
 ```bash
 python -m venv venv
-source venv/bin/activate(для Windows venv\Scripts\Activate.ps1)
+source venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 ```
 
-Для Windows используйте `venv\Scripts\activate`. Настройки берутся из `.env`; пример лежит в `.env.example`.
+Для Windows используйте `venv\Scripts\Activate.ps1`. Настройки берутся из `.env`; пример лежит в `.env.example`.
