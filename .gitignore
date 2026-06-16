@@ -6,3 +6,4 @@ db.sqbpro
 .DS_Store
 .idea/
 .vscode/
+.env
